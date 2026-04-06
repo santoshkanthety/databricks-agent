@@ -22,6 +22,17 @@ triggers:
   - Parquet
   - streaming
   - batch ingest
+  - PostgreSQL
+  - postgres
+  - JDBC
+  - RDS
+  - Aurora
+  - Azure Database for PostgreSQL
+  - Cloud SQL
+  - logical replication
+  - Debezium
+  - pg_cdc
+  - read replica
 ---
 
 # Source Integration in Databricks
@@ -95,56 +106,258 @@ databricks-agent pipelines create --name orders-autoloader \
   --target catalog.bronze.orders --checkpoint /mnt/checkpoints/orders
 ```
 
-## JDBC Sources (Databases)
+## PostgreSQL
+
+PostgreSQL is one of the most common OLTP sources fed into Databricks. Use JDBC for batch/incremental loads and logical replication (via Debezium or native CDC) for real-time pipelines.
+
+### Secrets Setup (Always First)
+
+```bash
+# Store credentials in Databricks Secrets — never hardcode
+databricks secrets create-scope --scope postgres-prod
+databricks secrets put-secret --scope postgres-prod --key host
+databricks secrets put-secret --scope postgres-prod --key port
+databricks secrets put-secret --scope postgres-prod --key database
+databricks secrets put-secret --scope postgres-prod --key user
+databricks secrets put-secret --scope postgres-prod --key password
+```
+
+### Full Load (Partitioned Parallel Read)
+
+Parallelise reads using a numeric or date partition column. Always point at a **read replica** for large extracts to avoid impacting production.
 
 ```python
-# PostgreSQL
+pg_host = dbutils.secrets.get("postgres-prod", "host")
+pg_db   = dbutils.secrets.get("postgres-prod", "database")
+pg_user = dbutils.secrets.get("postgres-prod", "user")
+pg_pass = dbutils.secrets.get("postgres-prod", "password")
+
+jdbc_url = f"jdbc:postgresql://{pg_host}:5432/{pg_db}"
+
+# Partitioned read — Spark spawns one task per partition
 df = (spark.read
     .format("jdbc")
-    .option("url", "jdbc:postgresql://hostname:5432/dbname")
-    .option("dbtable", "public.orders")
-    .option("user", dbutils.secrets.get("my-scope", "pg-user"))
-    .option("password", dbutils.secrets.get("my-scope", "pg-password"))
-    .option("driver", "org.postgresql.Driver")
-    .option("numPartitions", "8")
-    .option("partitionColumn", "order_id")
-    .option("lowerBound", "1")
-    .option("upperBound", "10000000")
+    .option("url",             jdbc_url)
+    .option("dbtable",         "public.orders")
+    .option("user",            pg_user)
+    .option("password",        pg_pass)
+    .option("driver",          "org.postgresql.Driver")
+    # Parallelism — tune numPartitions to worker count
+    .option("numPartitions",   "8")
+    .option("partitionColumn", "order_id")          # must be numeric
+    .option("lowerBound",      "1")
+    .option("upperBound",      "100000000")
+    # Performance
+    .option("fetchsize",       "10000")             # rows per JDBC fetch
+    .option("pushDownPredicate", "true")            # push WHERE to Postgres
     .load()
 )
 
-# SQL Server
-df = (spark.read
-    .format("jdbc")
-    .option("url", "jdbc:sqlserver://hostname:1433;databaseName=mydb")
-    .option("dbtable", "dbo.orders")
-    .option("user", dbutils.secrets.get("my-scope", "sql-user"))
-    .option("password", dbutils.secrets.get("my-scope", "sql-password"))
-    .option("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver")
-    .load()
+df.write.format("delta").mode("overwrite").saveAsTable("catalog.bronze.pg_orders")
+```
+
+### Incremental Watermark Load
+
+```python
+from pyspark.sql import functions as F
+
+def pg_incremental_load(table: str, watermark_col: str = "updated_at",
+                        target: str = None, scope: str = "postgres-prod"):
+    """Load only rows newer than the last watermark."""
+    pg_host = dbutils.secrets.get(scope, "host")
+    pg_db   = dbutils.secrets.get(scope, "database")
+    pg_user = dbutils.secrets.get(scope, "user")
+    pg_pass = dbutils.secrets.get(scope, "password")
+    jdbc_url = f"jdbc:postgresql://{pg_host}:5432/{pg_db}"
+
+    target = target or f"catalog.bronze.pg_{table.replace('.', '_')}"
+
+    # Get last watermark from Delta table
+    try:
+        last_wm = spark.sql(f"SELECT MAX({watermark_col}) FROM {target}").collect()[0][0]
+        last_wm = last_wm or "1970-01-01 00:00:00"
+    except Exception:
+        last_wm = "1970-01-01 00:00:00"
+
+    # Push the WHERE predicate down to PostgreSQL
+    query = f"(SELECT * FROM {table} WHERE {watermark_col} > '{last_wm}') AS incremental"
+
+    df = (spark.read
+        .format("jdbc")
+        .option("url",      jdbc_url)
+        .option("dbtable",  query)
+        .option("user",     pg_user)
+        .option("password", pg_pass)
+        .option("driver",   "org.postgresql.Driver")
+        .option("fetchsize", "5000")
+        .load()
+        .withColumn("_ingested_at", F.current_timestamp())
+    )
+
+    if df.isEmpty():
+        print(f"No new rows in {table} since {last_wm}")
+        return
+
+    df.write.format("delta").mode("append").saveAsTable(target)
+    print(f"Loaded {df.count():,} rows from {table} (watermark: {last_wm})")
+
+# Usage
+pg_incremental_load("public.orders",    watermark_col="updated_at")
+pg_incremental_load("public.customers", watermark_col="modified_at")
+```
+
+### SSL / TLS Connection (RDS, Azure Database for PostgreSQL)
+
+```python
+# For managed PostgreSQL (AWS RDS, Azure Database, Cloud SQL) — SSL required
+jdbc_url_ssl = (
+    f"jdbc:postgresql://{pg_host}:5432/{pg_db}"
+    "?sslmode=require"
+    "&sslrootcert=/dbfs/mnt/certs/rds-ca-bundle.pem"   # upload cert to DBFS first
 )
 
-# Snowflake
 df = (spark.read
-    .format("snowflake")
-    .options(**{
-        "sfURL": "account.snowflakecomputing.com",
-        "sfUser": dbutils.secrets.get("snow-scope", "user"),
-        .option("sfPassword", dbutils.secrets.get("snow-scope", "password"))
-        "sfDatabase": "MY_DB",
-        "sfSchema": "PUBLIC",
-        "sfWarehouse": "COMPUTE_WH",
-        "dbtable": "ORDERS"
-    })
+    .format("jdbc")
+    .option("url",      jdbc_url_ssl)
+    .option("dbtable",  "public.orders")
+    .option("user",     pg_user)
+    .option("password", pg_pass)
+    .option("driver",   "org.postgresql.Driver")
     .load()
 )
 ```
 
 ```bash
-# CLI: configure database source
+# Upload SSL certificate to DBFS
+dbutils.fs.cp("file:/local/path/rds-ca-bundle.pem", "dbfs:/mnt/certs/rds-ca-bundle.pem")
+```
+
+### CDC via Debezium + Kafka
+
+For sub-minute latency, use PostgreSQL logical replication (requires `wal_level = logical` on the server):
+
+```python
+# PostgreSQL → Debezium → Kafka → Databricks Structured Streaming
+df_cdc = (spark.readStream
+    .format("kafka")
+    .option("kafka.bootstrap.servers", dbutils.secrets.get("kafka-scope", "brokers"))
+    .option("subscribe", "postgres.public.orders")          # Debezium topic naming
+    .option("startingOffsets", "latest")
+    .load()
+)
+
+# Parse Debezium envelope (before/after/op)
+from pyspark.sql.types import *
+from pyspark.sql import functions as F
+
+debezium_schema = StructType([
+    StructField("before", StringType()),
+    StructField("after",  StringType()),
+    StructField("op",     StringType()),   # c=create, u=update, d=delete, r=read
+    StructField("ts_ms",  LongType()),
+])
+
+df_parsed = (df_cdc
+    .select(F.from_json(F.col("value").cast("string"), debezium_schema).alias("d"))
+    .select(
+        F.from_json("d.after",  order_schema).alias("after"),
+        F.from_json("d.before", order_schema).alias("before"),
+        F.col("d.op").alias("cdc_op"),
+        F.col("d.ts_ms").alias("cdc_ts_ms"),
+    )
+)
+
+# Apply changes to Delta table using DLT APPLY CHANGES
+import dlt
+
+dlt.create_streaming_table("silver_orders_from_postgres")
+dlt.apply_changes(
+    target="silver_orders_from_postgres",
+    source="bronze_pg_orders_cdc",
+    keys=["order_id"],
+    sequence_by="cdc_ts_ms",
+    apply_as_deletes=F.expr("cdc_op = 'd'"),
+    except_column_list=["cdc_op", "cdc_ts_ms"]
+)
+```
+
+### Schema Introspection
+
+```python
+def list_pg_tables(schema: str = "public", scope: str = "postgres-prod") -> list[dict]:
+    """List all tables and row counts in a PostgreSQL schema."""
+    pg_host = dbutils.secrets.get(scope, "host")
+    pg_db   = dbutils.secrets.get(scope, "database")
+    jdbc_url = f"jdbc:postgresql://{pg_host}:5432/{pg_db}"
+
+    query = f"""(
+        SELECT
+            table_name,
+            pg_size_pretty(pg_total_relation_size(quote_ident(table_name))) AS size,
+            (SELECT reltuples::BIGINT FROM pg_class WHERE relname = table_name) AS row_estimate
+        FROM information_schema.tables
+        WHERE table_schema = '{schema}' AND table_type = 'BASE TABLE'
+        ORDER BY pg_total_relation_size(quote_ident(table_name)) DESC
+    ) AS schema_info"""
+
+    return (spark.read.format("jdbc")
+        .option("url",      jdbc_url)
+        .option("dbtable",  query)
+        .option("user",     dbutils.secrets.get(scope, "user"))
+        .option("password", dbutils.secrets.get(scope, "password"))
+        .option("driver",   "org.postgresql.Driver")
+        .load()
+        .collect()
+    )
+```
+
+```bash
+# CLI: configure and test PostgreSQL connection
 databricks-agent connect --source postgres \
-  --host hostname --port 5432 --database dbname \
-  --secret-scope my-scope --secret-user pg-user --secret-password pg-password
+  --host db.example.com --port 5432 --database prod_db \
+  --secret-scope postgres-prod
+
+# List tables in a schema
+databricks-agent catalog list-source --source postgres --schema public
+
+# Run full load
+databricks-agent sql ingest --source postgres --table public.orders \
+  --target catalog.bronze.pg_orders --mode overwrite
+
+# Run incremental load
+databricks-agent sql ingest --source postgres --table public.orders \
+  --target catalog.bronze.pg_orders --mode incremental --watermark updated_at
+
+# Profile table before ingestion
+databricks-agent sql profile --source postgres --table public.orders
+```
+
+## Other JDBC Sources
+
+```python
+# SQL Server
+df = (spark.read.format("jdbc")
+    .option("url",      "jdbc:sqlserver://hostname:1433;databaseName=mydb")
+    .option("dbtable",  "dbo.orders")
+    .option("user",     dbutils.secrets.get("sql-scope", "user"))
+    .option("password", dbutils.secrets.get("sql-scope", "password"))
+    .option("driver",   "com.microsoft.sqlserver.jdbc.SQLServerDriver")
+    .load()
+)
+
+# Snowflake
+df = (spark.read.format("snowflake")
+    .options(**{
+        "sfURL":       "account.snowflakecomputing.com",
+        "sfUser":      dbutils.secrets.get("snow-scope", "user"),
+        "sfPassword":  dbutils.secrets.get("snow-scope", "password"),
+        "sfDatabase":  "MY_DB",
+        "sfSchema":    "PUBLIC",
+        "sfWarehouse": "COMPUTE_WH",
+        "dbtable":     "ORDERS",
+    })
+    .load()
+)
 ```
 
 ## REST API Ingestion
