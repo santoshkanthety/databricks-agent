@@ -84,7 +84,7 @@ def _check_skills():
 def _check_fastapi():
     try:
         import fastapi  # noqa: F401
-        return True, f"fastapi {importlib.metadata.version('fastapi')}", ""
+        return True, f"fastapi {fastapi.__version__}", ""
     except Exception:
         return False, "Not installed (optional)", "Run: pip install databricks-agent[ui]"
 

@@ -19,6 +19,8 @@ def run_query(
     from databricks_agent.connect import get_workspace_client
 
     w = get_workspace_client()
+    # Record wall-clock start before the blocking SDK call
+    start = time.time()
     response = w.statement_execution.execute_statement(
         statement=sql,
         warehouse_id=warehouse_id,
@@ -27,8 +29,7 @@ def run_query(
         wait_timeout=f"{timeout_seconds}s",
     )
 
-    # Poll until done
-    start = time.time()
+    # Poll if the SDK returned before the query finished (e.g. hit wait_timeout)
     while response.status.state in (StatementState.PENDING, StatementState.RUNNING):
         if time.time() - start > timeout_seconds:
             w.statement_execution.cancel_execution(response.statement_id)

@@ -48,7 +48,6 @@ def describe_table(full_name: str) -> dict:
     from databricks_agent.connect import get_workspace_client
 
     w = get_workspace_client()
-    catalog_name, schema_name, table_name = full_name.split(".")
     t = w.tables.get(full_name=full_name)
 
     columns = []
@@ -123,7 +122,7 @@ def get_table_lineage(full_name: str) -> dict:
     lineage = w.lineage_tracking.table_lineage(table_name=full_name)
 
     upstreams = [u.table_info.name for u in (lineage.upstreams or []) if u.table_info]
-    downstreams = [d.table_name for d in (lineage.downstreams or [])]
+    downstreams = [d.table_info.name for d in (lineage.downstreams or []) if d.table_info]
 
     return {
         "table": full_name,
