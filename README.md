@@ -181,4 +181,4 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-*Built by [Santosh Kanthety](https://github.com/santoshkanthety) · [LinkedIn](https://www.linkedin.com/in/santoshkanthety/) · Inspired by [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent)*
+*Built by [Santosh Kanthety](https://github.com/santoshkanthety) · [LinkedIn](https://www.linkedin.com/in/santoshkanthety/) · 20+ years of Technology & Data transformation delivery and strategy · Inspired by [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent)*
