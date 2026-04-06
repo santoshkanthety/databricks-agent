@@ -2,6 +2,15 @@
 
 > Give Claude Code enterprise-grade Databricks superpowers — community-driven, AI-powered analytics engineering automation.
 
+<div align="center">
+
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=0a0a0f)](https://python.org)
+[![Databricks](https://img.shields.io/badge/Databricks-SDK-FF3621?style=for-the-badge&logo=databricks&logoColor=white&labelColor=0a0a0f)](https://github.com/databricks/databricks-sdk-py)
+[![License](https://img.shields.io/badge/License-MIT-00f0ff?style=for-the-badge&labelColor=0a0a0f)](LICENSE)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Santosh%20Kanthety-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=0a0a0f)](https://www.linkedin.com/in/santoshkanthety/)
+
+</div>
+
 ---
 
 ## What is this?
@@ -9,6 +18,41 @@
 **databricks-agent** is an AI-native CLI + Claude Code skills layer that turns Claude into a Databricks expert. Once installed, Claude understands your Databricks workspace, Delta Lake patterns, Unity Catalog governance, DLT pipelines, and analytics engineering workflows natively — no copy-pasting documentation, no context switching.
 
 Inspired by [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent), built for the Databricks lakehouse ecosystem.
+
+---
+
+## Prerequisites
+
+Before installing, ensure the following are in place:
+
+| Requirement | Version | Notes |
+|---|---|---|
+| **Python** | 3.10 – 3.14 | `python --version` |
+| **pip** | Latest | `pip install --upgrade pip` |
+| **Claude Code** | Latest | [Install guide](https://claude.ai/code) — required for skills |
+| **Databricks Workspace** | Any cloud | Azure / AWS / GCP — Unity Catalog recommended |
+| **Databricks CLI or SDK** | Latest | Installed automatically via `pip install databricks-agent` |
+| **Authentication** | PAT or OAuth | Personal Access Token **or** OAuth M2M (service principal) |
+| **SQL Warehouse** | Active | Required for `databricks-agent sql query` commands |
+| **Unity Catalog** | Enabled | Required for `catalog` commands — metastore must be attached |
+| **Delta Live Tables** | Optional | Required for `pipelines` commands |
+| **MLflow** | Optional | `pip install "databricks-agent[ml]"` — for ML workflow skills |
+
+### Getting a Personal Access Token (PAT)
+
+1. Open your Databricks workspace
+2. Click your username (top-right) → **Settings** → **Developer**
+3. Click **Access Tokens** → **Generate new token**
+4. Set a description and expiry, then copy the token
+5. Run `databricks-agent connect setup` and paste it when prompted
+
+### Supported Clouds
+
+| Cloud | Host format |
+|---|---|
+| **Azure** | `https://adb-<id>.<region>.azuredatabricks.net` |
+| **AWS** | `https://<id>.cloud.databricks.com` |
+| **GCP** | `https://<id>.<region>.gcp.databricks.com` |
 
 ---
 
