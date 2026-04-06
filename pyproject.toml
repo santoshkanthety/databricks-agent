@@ -1,0 +1,79 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "databricks-agent"
+version = "0.1.0"
+description = "Give Claude Code enterprise-grade Databricks superpowers — AI-powered analytics engineering automation"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10,<3.15"
+keywords = ["databricks", "delta-lake", "claude", "ai", "analytics", "mcp"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+dependencies = [
+    "click>=8.0",
+    "rich>=13.0",
+    "httpx>=0.27",
+    "pydantic>=2.0",
+    "databricks-sdk>=0.30",
+]
+
+[project.optional-dependencies]
+ml = [
+    "mlflow>=2.14",
+]
+ui = [
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "jinja2>=3.1",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+    "mypy>=1.10",
+]
+all = [
+    "databricks-agent[ml,ui,dev]",
+]
+
+[project.scripts]
+databricks-agent = "databricks_agent.cli:main"
+dba = "databricks_agent.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/santoshkanthety/databricks-agent"
+Repository = "https://github.com/santoshkanthety/databricks-agent"
+Issues = "https://github.com/santoshkanthety/databricks-agent/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/databricks_agent"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+addopts = "-v --tb=short"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = false
+ignore_missing_imports = true
