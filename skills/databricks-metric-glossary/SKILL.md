@@ -1,20 +1,7 @@
 ---
 name: databricks-metric-glossary
-description: Metric definitions, dbt metrics, Unity Catalog documentation, Databricks AI/BI Semantic Layer, business glossary, and metric dependency tracking
-triggers:
-  - metric documentation
-  - measure documentation
-  - business glossary
-  - dbt metrics
-  - semantic layer
-  - metric definition
-  - KPI definition
-  - dependencies
-  - lineage
-  - data dictionary
-  - metric catalog
-  - undocumented tables
-  - metric audit
+description: Metric definitions, dbt metrics, Unity Catalog documentation, Databricks AI/BI Semantic Layer, business glossary, and metric dependency tracking. Use when the user mentions: metric documentation, measure documentation, business glossary, dbt metrics, semantic layer, metric definition, KPI definition, dependencies, lineage, data dictionary, metric catalog, undocumented tables, metric audit.
+license: MIT
 ---
 
 # Metric Glossary & Semantic Layer in Databricks

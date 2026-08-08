@@ -11,17 +11,18 @@ def list_jobs(name_filter: Optional[str] = None) -> list[dict]:
     w = get_workspace_client()
     jobs = []
     for job in w.jobs.list(name=name_filter):
-        jobs.append({
-            "job_id": job.job_id,
-            "name": job.settings.name if job.settings else "—",
-            "creator": job.creator_user_name,
-            "created_time": job.created_time,
-        })
+        jobs.append(
+            {
+                "job_id": job.job_id,
+                "name": job.settings.name if job.settings else "—",
+                "creator": job.creator_user_name,
+                "created_time": job.created_time,
+            }
+        )
     return jobs
 
 
-def run_job(job_id: Optional[int] = None, job_name: Optional[str] = None,
-            notebook_params: Optional[dict] = None) -> int:
+def run_job(job_id: Optional[int] = None, job_name: Optional[str] = None, notebook_params: Optional[dict] = None) -> int:
     """Trigger a job run by ID or name. Returns run_id."""
     from databricks_agent.connect import get_workspace_client
 
@@ -63,8 +64,7 @@ def cancel_run(run_id: int) -> None:
     w.jobs.cancel_run(run_id=run_id)
 
 
-def get_run_history(job_id: Optional[int] = None, job_name: Optional[str] = None,
-                    limit: int = 10) -> list[dict]:
+def get_run_history(job_id: Optional[int] = None, job_name: Optional[str] = None, limit: int = 10) -> list[dict]:
     from databricks_agent.connect import get_workspace_client
 
     w = get_workspace_client()
@@ -77,11 +77,13 @@ def get_run_history(job_id: Optional[int] = None, job_name: Optional[str] = None
     runs = []
     for run in w.jobs.list_runs(job_id=job_id, limit=limit):
         state = run.state
-        runs.append({
-            "run_id": run.run_id,
-            "state": state.life_cycle_state.value if state else "UNKNOWN",
-            "result": state.result_state.value if state and state.result_state else "—",
-            "start_time": run.start_time,
-            "end_time": run.end_time,
-        })
+        runs.append(
+            {
+                "run_id": run.run_id,
+                "state": state.life_cycle_state.value if state else "UNKNOWN",
+                "result": state.result_state.value if state and state.result_state else "—",
+                "start_time": run.start_time,
+                "end_time": run.end_time,
+            }
+        )
     return runs

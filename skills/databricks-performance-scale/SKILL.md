@@ -1,23 +1,7 @@
 ---
 name: databricks-performance-scale
-description: Databricks cluster optimization, Delta query tuning, caching, partitioning, autoscaling, photon, and capacity planning
-triggers:
-  - slow query
-  - performance
-  - optimization
-  - cluster sizing
-  - autoscaling
-  - photon
-  - caching
-  - partitioning
-  - skew
-  - shuffle
-  - spill
-  - query tuning
-  - capacity planning
-  - cost optimization
-  - warehouse sizing
-  - adaptive query execution
+description: Databricks cluster optimization, Delta query tuning, caching, partitioning, autoscaling, photon, and capacity planning. Use when the user mentions: slow query, performance, optimization, cluster sizing, autoscaling, photon, caching, partitioning, skew, shuffle, spill, query tuning, capacity planning, cost optimization, warehouse sizing, adaptive query execution.
+license: MIT
 ---
 
 # Performance & Scale in Databricks

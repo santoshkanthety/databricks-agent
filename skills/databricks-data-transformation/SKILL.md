@@ -1,21 +1,7 @@
 ---
 name: databricks-data-transformation
-description: PySpark and Spark SQL transformation patterns - union, append, type casting, surrogate keys, schema drift, Delta merge
-triggers:
-  - union
-  - append
-  - stack tables
-  - convert data types
-  - surrogate key
-  - schema alignment
-  - type casting
-  - data transformation
-  - merge
-  - upsert
-  - deduplication
-  - schema drift
-  - normalize
-  - flatten
+description: PySpark and Spark SQL transformation patterns - union, append, type casting, surrogate keys, schema drift, Delta merge. Use when the user mentions: union, append, stack tables, convert data types, surrogate key, schema alignment, type casting, data transformation, merge, upsert, deduplication, schema drift, normalize, flatten.
+license: MIT
 ---
 
 # Data Transformation Patterns in Databricks

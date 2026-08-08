@@ -1,25 +1,7 @@
 ---
 name: databricks-dlt-pipelines
-description: Delta Live Tables (DLT) pipeline patterns, ingestion strategies, CDC, Auto Loader, incremental loads, watermark, and Databricks Workflows
-triggers:
-  - ETL
-  - ELT
-  - DLT
-  - delta live tables
-  - pipeline
-  - ingestion
-  - incremental load
-  - CDC
-  - change data capture
-  - watermark
-  - Auto Loader
-  - streaming
-  - workflow
-  - job
-  - trigger
-  - continuous
-  - scheduled
-  - bronze silver gold
+description: Delta Live Tables (DLT) pipeline patterns, ingestion strategies, CDC, Auto Loader, incremental loads, watermark, and Databricks Workflows. Use when the user mentions: ETL, ELT, DLT, delta live tables, pipeline, ingestion, incremental load, CDC, change data capture, watermark, Auto Loader, streaming, workflow, job, trigger, continuous, scheduled, bronze silver gold.
+license: MIT
 ---
 
 # DLT Pipelines & Databricks Workflows

@@ -1,22 +1,7 @@
 ---
 name: databricks-project-management
-description: Databricks project delivery lifecycle - discovery, foundation, build, UAT, go-live, data product mindset, agile sprints, RAID logs
-triggers:
-  - project plan
-  - sprint
-  - milestone
-  - scope
-  - backlog
-  - data product
-  - agile
-  - go-live
-  - RAID log
-  - delivery
-  - timeline
-  - stakeholder
-  - requirements
-  - UAT
-  - hypercare
+description: Databricks project delivery lifecycle - discovery, foundation, build, UAT, go-live, data product mindset, agile sprints, RAID logs. Use when the user mentions: project plan, sprint, milestone, scope, backlog, data product, agile, go-live, RAID log, delivery, timeline, stakeholder, requirements, UAT, hypercare.
+license: MIT
 ---
 
 # Databricks Project Delivery & Management

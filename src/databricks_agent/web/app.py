@@ -287,29 +287,34 @@ async def index():
 @app.get("/api/warehouses")
 async def api_warehouses():
     from databricks_agent.sql import list_warehouses
+
     return list_warehouses()
 
 
 @app.get("/api/jobs")
 async def api_jobs():
     from databricks_agent.jobs import list_jobs
+
     return list_jobs()
 
 
 @app.get("/api/pipelines")
 async def api_pipelines():
     from databricks_agent.pipelines import list_pipelines
+
     return list_pipelines()
 
 
 @app.get("/api/clusters")
 async def api_clusters():
     from databricks_agent.clusters import list_clusters
+
     return list_clusters()
 
 
 @app.get("/health")
 async def health():
     from databricks_agent.connect import test_connection
+
     ok, msg = test_connection()
     return {"status": "ok" if ok else "error", "message": msg}

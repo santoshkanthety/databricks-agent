@@ -1,24 +1,7 @@
 ---
 name: databricks-time-series-data
-description: Time series patterns in Databricks - gap detection, date spines, binning, LOCF, streaming windows, IoT and sensor data patterns
-triggers:
-  - time series
-  - gaps
-  - sparse data
-  - binning
-  - time buckets
-  - IoT
-  - sensor data
-  - tick data
-  - date spine
-  - gap filling
-  - LOCF
-  - last observation
-  - normalize time
-  - streaming window
-  - tumbling window
-  - sliding window
-  - session window
+description: Time series patterns in Databricks - gap detection, date spines, binning, LOCF, streaming windows, IoT and sensor data patterns. Use when the user mentions: time series, gaps, sparse data, binning, time buckets, IoT, sensor data, tick data, date spine, gap filling, LOCF, last observation, normalize time, streaming window, tumbling window, sliding window, session window.
+license: MIT
 ---
 
 # Time Series Data in Databricks

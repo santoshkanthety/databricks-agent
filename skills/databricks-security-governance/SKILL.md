@@ -1,24 +1,7 @@
 ---
 name: databricks-security-governance
-description: Unity Catalog row filters, column masks, table ACLs, data masking, service principals, workspace access, PII governance, and audit logging
-triggers:
-  - row filter
-  - column mask
-  - data masking
-  - RLS
-  - row-level security
-  - column-level security
-  - access control
-  - permissions
-  - ACL
-  - service principal
-  - PII
-  - sensitive data
-  - audit log
-  - governance
-  - Unity Catalog security
-  - GRANT
-  - REVOKE
+description: Unity Catalog row filters, column masks, table ACLs, data masking, service principals, workspace access, PII governance, and audit logging. Use when the user mentions: row filter, column mask, data masking, RLS, row-level security, column-level security, access control, permissions, ACL, service principal, PII, sensitive data, audit log, governance, Unity Catalog security, GRANT, REVOKE.
+license: MIT
 ---
 
 # Security & Governance in Databricks

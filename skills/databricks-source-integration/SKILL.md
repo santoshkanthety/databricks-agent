@@ -1,38 +1,7 @@
 ---
 name: databricks-source-integration
-description: Data source integration patterns - Auto Loader, JDBC/ODBC, cloud storage, Kafka, REST APIs, CSV files, and the databricks-agent UI for pipeline configuration
-triggers:
-  - data ingestion
-  - connections
-  - pipeline setup
-  - sources
-  - JDBC
-  - ODBC
-  - databases
-  - APIs
-  - REST API
-  - Kafka
-  - Auto Loader
-  - cloud storage
-  - S3
-  - ADLS
-  - GCS
-  - CSV
-  - JSON
-  - Parquet
-  - streaming
-  - batch ingest
-  - PostgreSQL
-  - postgres
-  - JDBC
-  - RDS
-  - Aurora
-  - Azure Database for PostgreSQL
-  - Cloud SQL
-  - logical replication
-  - Debezium
-  - pg_cdc
-  - read replica
+description: Data source integration patterns - Auto Loader, JDBC/ODBC, cloud storage, Kafka, REST APIs, CSV files, and the databricks-agent UI for pipeline configuration. Use when the user mentions: data ingestion, connections, pipeline setup, sources, JDBC, ODBC, databases, APIs, REST API, Kafka, Auto Loader, cloud storage, S3, ADLS, GCS, CSV, JSON, Parquet, streaming, batch ingest, PostgreSQL, postgres, JDBC, RDS, Aurora, Azure Database for PostgreSQL, Cloud SQL, logical replication, Debezium, pg_cdc, read replica.
+license: MIT
 ---
 
 # Source Integration in Databricks
