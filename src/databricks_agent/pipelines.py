@@ -40,8 +40,7 @@ def get_pipeline_status(pipeline_id: Optional[str] = None, name: Optional[str] =
     }
 
 
-def start_pipeline(pipeline_id: Optional[str] = None, name: Optional[str] = None,
-                   full_refresh: bool = False) -> None:
+def start_pipeline(pipeline_id: Optional[str] = None, name: Optional[str] = None, full_refresh: bool = False) -> None:
     from databricks_agent.connect import get_workspace_client
 
     w = get_workspace_client()
@@ -61,8 +60,7 @@ def stop_pipeline(pipeline_id: Optional[str] = None, name: Optional[str] = None)
     w.pipelines.stop(pipeline_id=pipeline_id)
 
 
-def get_pipeline_events(pipeline_id: Optional[str] = None, name: Optional[str] = None,
-                        limit: int = 20) -> list[dict]:
+def get_pipeline_events(pipeline_id: Optional[str] = None, name: Optional[str] = None, limit: int = 20) -> list[dict]:
     from databricks_agent.connect import get_workspace_client
 
     w = get_workspace_client()
@@ -71,13 +69,15 @@ def get_pipeline_events(pipeline_id: Optional[str] = None, name: Optional[str] =
 
     events = []
     for event in w.pipelines.list_pipeline_events(pipeline_id=pipeline_id):
-        events.append({
-            "timestamp": event.timestamp,
-            "level": event.level.value if event.level else "INFO",
-            "event_type": event.event_type,
-            "message": event.message,
-            "maturity_level": event.maturity_level.value if event.maturity_level else "—",
-        })
+        events.append(
+            {
+                "timestamp": event.timestamp,
+                "level": event.level.value if event.level else "INFO",
+                "event_type": event.event_type,
+                "message": event.message,
+                "maturity_level": event.maturity_level.value if event.maturity_level else "—",
+            }
+        )
         if len(events) >= limit:
             break
     return events

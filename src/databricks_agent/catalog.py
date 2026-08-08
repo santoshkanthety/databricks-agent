@@ -9,10 +9,7 @@ def list_catalogs() -> list[dict]:
     from databricks_agent.connect import get_workspace_client
 
     w = get_workspace_client()
-    return [
-        {"name": c.name, "owner": c.owner, "comment": c.comment}
-        for c in w.catalogs.list()
-    ]
+    return [{"name": c.name, "owner": c.owner, "comment": c.comment} for c in w.catalogs.list()]
 
 
 def list_schemas(catalog_name: str) -> list[dict]:
@@ -53,13 +50,15 @@ def describe_table(full_name: str) -> dict:
     columns = []
     if t.columns:
         for col in t.columns:
-            columns.append({
-                "name": col.name,
-                "type": col.type_text,
-                "nullable": col.nullable,
-                "comment": col.comment or "",
-                "tags": col.tags or {},
-            })
+            columns.append(
+                {
+                    "name": col.name,
+                    "type": col.type_text,
+                    "nullable": col.nullable,
+                    "comment": col.comment or "",
+                    "tags": col.tags or {},
+                }
+            )
 
     return {
         "full_name": t.full_name,
@@ -82,8 +81,9 @@ def grant_permission(
     principal: str,
     privileges: list[str],
 ) -> None:
-    from databricks_agent.connect import get_workspace_client
     from databricks.sdk.service.catalog import PermissionsChange, Privilege, SecurableType
+
+    from databricks_agent.connect import get_workspace_client
 
     w = get_workspace_client()
     w.grants.update(
@@ -99,8 +99,9 @@ def grant_permission(
 
 
 def show_grants(full_name: str, securable_type: str = "TABLE") -> list[dict]:
-    from databricks_agent.connect import get_workspace_client
     from databricks.sdk.service.catalog import SecurableType
+
+    from databricks_agent.connect import get_workspace_client
 
     w = get_workspace_client()
     perms = w.grants.get(
@@ -110,8 +111,7 @@ def show_grants(full_name: str, securable_type: str = "TABLE") -> list[dict]:
     if not perms.privilege_assignments:
         return []
     return [
-        {"principal": pa.principal, "privileges": [p.value for p in (pa.privileges or [])]}
-        for pa in perms.privilege_assignments
+        {"principal": pa.principal, "privileges": [p.value for p in (pa.privileges or [])]} for pa in perms.privilege_assignments
     ]
 
 

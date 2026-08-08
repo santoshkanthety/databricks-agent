@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import importlib
 import sys
 from pathlib import Path
 
@@ -16,9 +15,11 @@ _checks: list[tuple[str, callable]] = []
 
 def check(name: str):
     """Decorator to register a diagnostic check."""
+
     def decorator(fn):
         _checks.append((name, fn))
         return fn
+
     return decorator
 
 
@@ -32,8 +33,10 @@ def _check_python():
 @check("databricks-sdk installed")
 def _check_sdk():
     try:
-        import databricks.sdk  # noqa: F401
         import importlib.metadata
+
+        import databricks.sdk  # noqa: F401
+
         version = importlib.metadata.version("databricks-sdk")
         return True, f"databricks-sdk {version}", ""
     except ImportError:
@@ -44,6 +47,7 @@ def _check_sdk():
 def _check_connection():
     try:
         from databricks_agent.connect import test_connection
+
         ok, msg = test_connection()
         return ok, msg, "Run: databricks-agent connect"
     except Exception as e:
@@ -53,6 +57,7 @@ def _check_connection():
 @check("Default warehouse configured")
 def _check_warehouse():
     from databricks_agent.connect import get_config
+
     config = get_config()
     if config.get("default_warehouse"):
         return True, config["default_warehouse"], ""
@@ -62,6 +67,7 @@ def _check_warehouse():
 @check("Default catalog configured")
 def _check_catalog():
     from databricks_agent.connect import get_config
+
     config = get_config()
     if config.get("default_catalog"):
         return True, config["default_catalog"], ""
@@ -84,6 +90,7 @@ def _check_skills():
 def _check_fastapi():
     try:
         import fastapi  # noqa: F401
+
         return True, f"fastapi {fastapi.__version__}", ""
     except Exception:
         return False, "Not installed (optional)", "Run: pip install databricks-agent[ui]"
@@ -93,6 +100,7 @@ def _check_fastapi():
 def _check_mlflow():
     try:
         import mlflow  # noqa: F401
+
         return True, f"mlflow {mlflow.__version__}", ""
     except Exception:
         return False, "Not installed (optional)", "Run: pip install databricks-agent[ml]"

@@ -10,8 +10,8 @@ from typing import Optional
 
 import click
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
+from rich.table import Table
 from rich.text import Text
 
 console = Console()
@@ -38,6 +38,7 @@ def main():
 
 
 # ─────────────────────────────── CONNECT ──────────────────────────────────────
+
 
 @main.group()
 def connect():
@@ -95,10 +96,11 @@ def connect_list():
 @click.option("--profile", default=None, help="Profile name from ~/.databrickscfg")
 def connect_test(profile: Optional[str]):
     """Test the current workspace connection."""
-    from databricks_agent.connect import test_connection, get_workspace_client
+    from databricks_agent.connect import test_connection
 
     if profile:
         from databricks_agent.connect import get_workspace_client as gwc
+
         try:
             w = gwc(profile=profile)
             me = w.current_user.me()
@@ -114,6 +116,7 @@ def connect_test(profile: Optional[str]):
 
 
 # ─────────────────────────────── SQL ──────────────────────────────────────────
+
 
 @main.group()
 def sql():
@@ -131,7 +134,7 @@ def sql():
 def sql_query(query_str, query_file, warehouse, catalog, schema, output, limit):
     """Execute a SQL query on a SQL Warehouse."""
     from databricks_agent.connect import get_config
-    from databricks_agent.sql import run_query, get_warehouse_id
+    from databricks_agent.sql import get_warehouse_id, run_query
 
     if query_file:
         with open(query_file) as f:
@@ -190,15 +193,12 @@ def sql_warehouses():
 
     for wh in warehouses:
         state_style = "green" if wh["state"] == "RUNNING" else "yellow"
-        table.add_row(
-            wh["id"], wh["name"], wh["size"] or "—",
-            f"[{state_style}]{wh['state']}[/{state_style}]",
-            wh["type"]
-        )
+        table.add_row(wh["id"], wh["name"], wh["size"] or "—", f"[{state_style}]{wh['state']}[/{state_style}]", wh["type"])
     console.print(table)
 
 
 # ─────────────────────────────── JOBS ─────────────────────────────────────────
+
 
 @main.group()
 def jobs():
@@ -279,16 +279,12 @@ def jobs_history(name, job_id, limit):
 
     for r in runs:
         result_style = "green" if r["result"] == "SUCCESS" else ("red" if r["result"] == "FAILED" else "dim")
-        table.add_row(
-            str(r["run_id"]),
-            r["state"],
-            f"[{result_style}]{r['result']}[/{result_style}]",
-            str(r["start_time"])
-        )
+        table.add_row(str(r["run_id"]), r["state"], f"[{result_style}]{r['result']}[/{result_style}]", str(r["start_time"]))
     console.print(table)
 
 
 # ─────────────────────────────── CLUSTERS ─────────────────────────────────────
+
 
 @main.group()
 def clusters():
@@ -313,9 +309,12 @@ def clusters_list():
         state_style = "green" if c["state"] == "RUNNING" else ("dim" if c["state"] == "TERMINATED" else "yellow")
         workers = str(c["num_workers"]) if c["num_workers"] is not None else "—"
         table.add_row(
-            c["cluster_id"], c["name"],
+            c["cluster_id"],
+            c["name"],
             f"[{state_style}]{c['state']}[/{state_style}]",
-            workers, c["worker_node"] or "—", c["spark_version"] or "—"
+            workers,
+            c["worker_node"] or "—",
+            c["spark_version"] or "—",
         )
     console.print(table)
 
@@ -328,7 +327,7 @@ def clusters_start(name, cluster_id):
     from databricks_agent.clusters import start_cluster
 
     start_cluster(cluster_id=cluster_id, cluster_name=name)
-    console.print(f"[green]✓ Cluster start initiated.[/green]")
+    console.print("[green]✓ Cluster start initiated.[/green]")
 
 
 @clusters.command("info")
@@ -346,6 +345,7 @@ def clusters_info(name, cluster_id):
 
 # ─────────────────────────────── CATALOG ──────────────────────────────────────
 
+
 @main.group()
 def catalog():
     """Unity Catalog operations — tables, lineage, grants, tags, audits."""
@@ -358,6 +358,7 @@ def catalog_list(catalog_name, schema_name):
     """List schemas in a catalog, or tables in a schema."""
     if schema_name:
         from databricks_agent.catalog import list_tables
+
         tables = list_tables(catalog_name, schema_name)
         table = Table(title=f"Tables in {catalog_name}.{schema_name}", header_style="bold cyan")
         table.add_column("Name")
@@ -368,11 +369,17 @@ def catalog_list(catalog_name, schema_name):
 
         for t in tables:
             comment_style = "dim" if t["comment"].startswith("⚠️") else ""
-            table.add_row(t["name"], t["table_type"], t["data_source_format"],
-                          t["owner"] or "—", f"[{comment_style}]{t['comment']}[/{comment_style}]")
+            table.add_row(
+                t["name"],
+                t["table_type"],
+                t["data_source_format"],
+                t["owner"] or "—",
+                f"[{comment_style}]{t['comment']}[/{comment_style}]",
+            )
         console.print(table)
     else:
         from databricks_agent.catalog import list_schemas
+
         schemas = list_schemas(catalog_name)
         table = Table(title=f"Schemas in {catalog_name}", header_style="bold cyan")
         table.add_column("Schema")
@@ -408,10 +415,11 @@ def catalog_describe(table_full_name):
         for col in info["columns"]:
             comment_style = "dim" if not col["comment"] else ""
             col_table.add_row(
-                col["name"], col["type"],
+                col["name"],
+                col["type"],
                 "Y" if col["nullable"] else "N",
                 f"[{comment_style}]{col['comment'] or '—'}[/{comment_style}]",
-                str(col["tags"]) if col["tags"] else "—"
+                str(col["tags"]) if col["tags"] else "—",
             )
         console.print(col_table)
 
@@ -489,6 +497,7 @@ def catalog_audit(catalog_name, schema_name):
 
 # ─────────────────────────────── PIPELINES ────────────────────────────────────
 
+
 @main.group()
 def pipelines():
     """Manage Delta Live Tables (DLT) pipelines."""
@@ -510,9 +519,7 @@ def pipelines_list():
     for p in pipeline_list:
         state_style = "green" if p["state"] == "RUNNING" else ("dim" if p["state"] == "IDLE" else "yellow")
         table.add_row(
-            p["pipeline_id"], p["name"],
-            f"[{state_style}]{p['state']}[/{state_style}]",
-            p["target"] or "—", p["creator"] or "—"
+            p["pipeline_id"], p["name"], f"[{state_style}]{p['state']}[/{state_style}]", p["target"] or "—", p["creator"] or "—"
         )
     console.print(table)
 
@@ -565,12 +572,13 @@ def pipelines_events(name, pipeline_id, limit):
             str(e["timestamp"]),
             f"[{level_style}]{e['level']}[/{level_style}]",
             e["event_type"] or "—",
-            (e["message"] or "")[:100]
+            (e["message"] or "")[:100],
         )
     console.print(table)
 
 
 # ─────────────────────────────── SKILLS ───────────────────────────────────────
+
 
 @main.group()
 def skills():
@@ -608,6 +616,7 @@ def skills_list():
 
 # ─────────────────────────────── DOCTOR ───────────────────────────────────────
 
+
 @main.command()
 def doctor():
     """Run environment diagnostics."""
@@ -624,6 +633,7 @@ def doctor():
 
 # ─────────────────────────────── UI ───────────────────────────────────────────
 
+
 @main.command()
 @click.option("--port", default=8000, help="Port for the web UI")
 @click.option("--host", "bind_host", default="127.0.0.1", help="Bind host")
@@ -631,6 +641,7 @@ def ui(port, bind_host):
     """Launch the web configuration UI."""
     try:
         import uvicorn
+
         from databricks_agent.web.app import app as fastapi_app
     except ImportError:
         console.print("[red]Web UI requires the 'ui' extra. Run: pip install databricks-agent[ui][/red]")
