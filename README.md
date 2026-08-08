@@ -36,6 +36,86 @@ Built by **[Santosh Kanthety](https://www.linkedin.com/in/santoshkanthety/)** ·
 
 ---
 
+---
+
+## 🧊 Beneath the Waterline
+
+> **This CLI is the visible 10%.**
+> What you install is one platform adapter sitting on top of a delivery doctrine built over 20+ years of shipping regulated, high-volume analytics inside tightly controlled enterprise environments — where the pipeline has to be right, auditable and defensible, not just fast to demo. The 17 skills are the codified version of that. The accelerators they were extracted from are the rest of the iceberg.
+
+### The portable core
+
+Most skill packs are written *for* one platform. These aren't. **Ten of these 17 concerns appear again in [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent) under the same names — each fully rewritten in that platform's own idiom, not copy-pasted.** Governance, lineage, medallion layering and test strategy don't change when the engine does; only their expression does:
+
+`medallion-architecture` · `data-catalog-lineage` · `data-governance-traceability` · `data-transformation` · `source-integration` · `performance-scale` · `testing-validation` · `time-series-data` · `cyber-security` · `project-management`
+
+The remaining skills are the same doctrine in Databricks dialect:
+
+| Doctrine layer | Databricks dialect | Power BI dialect |
+|---|---|---|
+| Metric semantics | `metric-glossary` | `measure-glossary` |
+| Access control | `security-governance` | `security-rls` |
+| Query language | `spark-sql-mastery` | `dax-mastery` |
+| Physical modeling | `delta-modeling` | `power-bi-model` |
+| Orchestration | `dlt-pipelines` | `fabric-pipelines` |
+| Presentation | `dashboard-authoring` | `pbi-report-design` |
+
+```mermaid
+flowchart TD
+    subgraph CORE ["🧊 DELIVERY DOCTRINE · platform-neutral · the part that took 20 years"]
+        direction LR
+        G1["governance ·\nlineage · audit"]:::core
+        G2["medallion ·\nmodeling · testing"]:::core
+        G3["scale · volume ·\ncost control"]:::core
+        G4["compliance ·\ncontrolled release"]:::core
+    end
+
+    subgraph ADAPT ["🔌 PLATFORM ADAPTERS · thin · replaceable"]
+        direction LR
+        A1["databricks-agent\nUC · DLT · Spark SQL"]:::ship
+        A2["powerbi-agent\nTOM · TMDL · PBIR · Fabric"]:::ship
+        A3["next platform\nSnowflake · dbt · Tableau"]:::next
+    end
+
+    CORE --> ADAPT
+
+    classDef core fill:#0c1f30,color:#00f0ff,stroke:#00f0ff,stroke-width:1px
+    classDef ship fill:#0a1a0a,color:#00f0ff,stroke:#007a00,stroke-width:1px
+    classDef next fill:#0a0a14,color:#4a7080,stroke:#1a3040,stroke-dasharray:4
+```
+
+**The consequence:** the first platform costs what it costs. The second costs a fraction. The doctrine is already written, tested and in production — only the dialect changes.
+
+### What this was built against
+
+The skills here are not summaries of the Databricks docs. Each is a distilled answer to a problem that cost real time in a real environment:
+
+| Constraint | What it forced into the doctrine |
+|---|---|
+| **Volume** | Pipelines that survive real partition skew and file counts — `performance-scale`, `delta-modeling`, `time-series-data` |
+| **Compliance** | Provable answers to *where did this number come from* — `data-governance-traceability`, `data-catalog-lineage`, UC audit paths |
+| **Controlled environments** | Locked workspaces, no-internet build hosts, least-privilege service principals — `cyber-security`, `security-governance`, OAuth M2M over PAT |
+| **Budget** | Same doctrine runs on serverless SQL or a fixed job cluster; skills are Markdown, the CLI is MIT, nothing here bills per seat |
+| **Multiple domains** | Finance, operations, engagement, HR, energy and healthcare-shaped data structures — reflected in the modeling and glossary skills rather than one vertical's vocabulary |
+
+### Proof, not claims
+
+Open repositories running the same doctrine end-to-end:
+
+| Repo | What it demonstrates |
+|---|---|
+| **[energy-transition-etl](https://github.com/santoshkanthety/energy-transition-etl)** | This agent's doctrine in production shape — EIA API → bronze/silver/gold, Asset Bundles, Unity Catalog, PySpark |
+| **[powerbi-agent](https://github.com/santoshkanthety/powerbi-agent)** | The sibling adapter — 45 skills, same core, different engine |
+| **[journey-to-ironman-703](https://github.com/santoshkanthety/journey-to-ironman-703)** | The doctrine at small scale — API ingest → Postgres → KPI layer → Databricks dashboards |
+
+### Where the iceberg goes
+
+Public today: the CLI, the skills, the reference pipelines. Not public: the accelerators these were extracted from — deployment harnesses, domain-tuned quality rule packs, migration tooling, capacity-cost models, and the delivery playbooks that decide *which* of the above a given engagement actually needs.
+
+Sizing a platform build, a migration or a governance retrofit and want the part that isn't on GitHub — **[linkedin.com/in/santoshkanthety](https://www.linkedin.com/in/santoshkanthety/)**.
+
+---
+
 ## 🔭 How It Works
 
 ```mermaid
