@@ -1,27 +1,7 @@
 ---
 name: databricks-data-governance-traceability
-description: End-to-end data governance traceability in Databricks - regulatory compliance (GDPR, CCPA, HIPAA), data lineage chains, retention policies, classification, consent tracking, and audit-ready evidence
-triggers:
-  - governance traceability
-  - data lineage chain
-  - GDPR
-  - CCPA
-  - HIPAA
-  - data retention
-  - right to erasure
-  - data subject request
-  - DSR
-  - consent tracking
-  - regulatory compliance
-  - data classification
-  - impact assessment
-  - DPIA
-  - breach detection
-  - data residency
-  - sovereignty
-  - cross-border transfer
-  - traceability report
-  - evidence package
+description: End-to-end data governance traceability in Databricks - regulatory compliance (GDPR, CCPA, HIPAA), data lineage chains, retention policies, classification, consent tracking, and audit-ready evidence. Use when the user mentions: governance traceability, data lineage chain, GDPR, CCPA, HIPAA, data retention, right to erasure, data subject request, DSR, consent tracking, regulatory compliance, data classification, impact assessment, DPIA, breach detection, data residency, sovereignty, cross-border transfer, traceability report, evidence package.
+license: MIT
 ---
 
 # Data Governance & Traceability in Databricks

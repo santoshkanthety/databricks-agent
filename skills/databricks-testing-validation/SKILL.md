@@ -1,23 +1,7 @@
 ---
 name: databricks-testing-validation
-description: Data testing patterns for Databricks - DLT expectations, Delta constraints, Great Expectations, dbt tests, Spark unit tests, reconciliation, UAT
-triggers:
-  - testing
-  - unit test
-  - data quality
-  - validate
-  - assertion
-  - UAT
-  - reconciliation
-  - Great Expectations
-  - dbt test
-  - DLT expectations
-  - Delta constraints
-  - pytest
-  - data validation
-  - quality checks
-  - row count
-  - null check
+description: Data testing patterns for Databricks - DLT expectations, Delta constraints, Great Expectations, dbt tests, Spark unit tests, reconciliation, UAT. Use when the user mentions: testing, unit test, data quality, validate, assertion, UAT, reconciliation, Great Expectations, dbt test, DLT expectations, Delta constraints, pytest, data validation, quality checks, row count, null check.
+license: MIT
 ---
 
 # Testing & Validation in Databricks

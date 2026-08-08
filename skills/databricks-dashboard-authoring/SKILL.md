@@ -1,23 +1,7 @@
 ---
 name: databricks-dashboard-authoring
-description: Databricks AI/BI Lakeview dashboards, DBSQL visualizations, design principles, interactivity, layout, and accessibility
-triggers:
-  - dashboard
-  - visualization
-  - chart
-  - report
-  - lakeview
-  - DBSQL
-  - sql dashboard
-  - filters
-  - parameters
-  - drilldown
-  - KPI widget
-  - counter
-  - heatmap
-  - AI/BI
-  - design
-  - layout
+description: Databricks AI/BI Lakeview dashboards, DBSQL visualizations, design principles, interactivity, layout, and accessibility. Use when the user mentions: dashboard, visualization, chart, report, lakeview, DBSQL, sql dashboard, filters, parameters, drilldown, KPI widget, counter, heatmap, AI/BI, design, layout.
+license: MIT
 ---
 
 # Dashboard Authoring in Databricks

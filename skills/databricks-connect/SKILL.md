@@ -1,18 +1,7 @@
 ---
 name: databricks-connect
-description: Quick start guide for connecting databricks-agent to a Databricks workspace using PAT tokens or OAuth
-triggers:
-  - connect
-  - databricks connect
-  - connection issues
-  - authentication
-  - workspace
-  - token
-  - oauth
-  - profile
-  - databricks-agent connect
-  - how to connect
-  - no workspace
+description: Quick start guide for connecting databricks-agent to a Databricks workspace using PAT tokens or OAuth. Use when the user mentions: connect, databricks connect, connection issues, authentication, workspace, token, oauth, profile, databricks-agent connect, how to connect, no workspace.
+license: MIT
 ---
 
 # Connecting to Databricks

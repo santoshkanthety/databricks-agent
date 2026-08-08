@@ -73,7 +73,7 @@ def _check_skills():
     skills_dir = Path.home() / ".claude" / "skills"
     if not skills_dir.exists():
         return False, "~/.claude/skills/ not found", "Run: databricks-agent skills install"
-    installed = list(skills_dir.glob("databricks-*.md"))
+    installed = [d for d in skills_dir.glob("databricks-*") if (d / "SKILL.md").exists()]
     count = len(installed)
     if count == 0:
         return False, "No databricks skills installed", "Run: databricks-agent skills install"

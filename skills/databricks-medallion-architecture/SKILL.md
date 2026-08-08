@@ -1,22 +1,7 @@
 ---
 name: databricks-medallion-architecture
-description: Bronze/Silver/Gold medallion architecture on Databricks Delta Lake - layer design, naming conventions, Delta optimizations, V-Order, Liquid Clustering
-triggers:
-  - medallion
-  - bronze
-  - silver
-  - gold
-  - lakehouse
-  - delta lake
-  - layer design
-  - data architecture
-  - delta table
-  - liquid clustering
-  - v-order
-  - z-order
-  - optimize
-  - vacuum
-  - time travel
+description: Bronze/Silver/Gold medallion architecture on Databricks Delta Lake - layer design, naming conventions, Delta optimizations, V-Order, Liquid Clustering. Use when the user mentions: medallion, bronze, silver, gold, lakehouse, delta lake, layer design, data architecture, delta table, liquid clustering, v-order, z-order, optimize, vacuum, time travel.
+license: MIT
 ---
 
 # Medallion Architecture on Databricks Delta Lake

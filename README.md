@@ -45,20 +45,22 @@ Built by **[Santosh Kanthety](https://www.linkedin.com/in/santoshkanthety/)** ·
 
 ### The portable core
 
-Most skill packs are written *for* one platform. These aren't. **Ten of these 17 concerns appear again in [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent) under the same names — each fully rewritten in that platform's own idiom, not copy-pasted.** Governance, lineage, medallion layering and test strategy don't change when the engine does; only their expression does:
+Most skill packs are written *for* one platform. These aren't. **Ten of these 17 concerns have a one-to-one counterpart in [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent) — `databricks-medallion-architecture` ↔ `powerbi-medallion-architecture`, and nine more — each written in that platform's own idiom, not copy-pasted.** Governance, lineage, medallion layering and test strategy don't change when the engine does; only their expression does. The paired concerns:
 
 `medallion-architecture` · `data-catalog-lineage` · `data-governance-traceability` · `data-transformation` · `source-integration` · `performance-scale` · `testing-validation` · `time-series-data` · `cyber-security` · `project-management`
+
+Each exists as `databricks-<concern>` here and `powerbi-<concern>` there. The prefix is load-bearing: both packs install into `~/.claude/skills/`, so without it one would silently overwrite the other. Both repos validate against the same [skill schema](SKILL_SCHEMA.md) in CI.
 
 The remaining skills are the same doctrine in Databricks dialect:
 
 | Doctrine layer | Databricks dialect | Power BI dialect |
 |---|---|---|
-| Metric semantics | `metric-glossary` | `measure-glossary` |
-| Access control | `security-governance` | `security-rls` |
-| Query language | `spark-sql-mastery` | `dax-mastery` |
-| Physical modeling | `delta-modeling` | `power-bi-model` |
-| Orchestration | `dlt-pipelines` | `fabric-pipelines` |
-| Presentation | `dashboard-authoring` | `pbi-report-design` |
+| Metric semantics | `databricks-metric-glossary` | `powerbi-measure-glossary` |
+| Access control | `databricks-security-governance` | `powerbi-security-rls` |
+| Query language | `databricks-spark-sql-mastery` | `powerbi-dax-mastery` |
+| Physical modeling | `databricks-delta-modeling` | `powerbi-model` |
+| Orchestration | `databricks-dlt-pipelines` | `powerbi-fabric-pipelines` |
+| Presentation | `databricks-dashboard-authoring` | `powerbi-report-design` |
 
 ```mermaid
 flowchart TD
@@ -220,7 +222,7 @@ sequenceDiagram
     CLI-->>You: workspace confirmed
 
     You->>CLI: databricks-agent skills install
-    CLI-->>You: ✓ 17 skills → ~/.claude/skills/
+    CLI-->>You: ✓ 17 skills → ~/.claude/skills/<name>/SKILL.md
 
     You->>CLI: databricks-agent doctor
     CLI-->>You: ✓ all checks passed
@@ -304,38 +306,38 @@ databricks-agent skills install   # → ~/.claude/skills/
 ### 🏗️ Architecture & Modeling
 | Skill | Triggers on |
 |---|---|
-| `medallion-architecture` | bronze · silver · gold · Delta Lake · V-Order · Liquid Clustering |
-| `delta-modeling` | star schema · SCD · fact table · dimension · surrogate key · grain |
-| `spark-sql-mastery` | window function · aggregation · CTE · explain plan · OVER PARTITION |
+| `databricks-medallion-architecture` | bronze · silver · gold · Delta Lake · V-Order · Liquid Clustering |
+| `databricks-delta-modeling` | star schema · SCD · fact table · dimension · surrogate key · grain |
+| `databricks-spark-sql-mastery` | window function · aggregation · CTE · explain plan · OVER PARTITION |
 
 ### ⚙️ Ingestion & Pipelines
 | Skill | Triggers on |
 |---|---|
-| `dlt-pipelines` | Delta Live Tables · Auto Loader · CDC · APPLY CHANGES · Workflows |
-| `source-integration` | PostgreSQL · JDBC · Kafka · REST API · Auto Loader · S3 · ADLS |
-| `data-transformation` | union · merge · dedup · schema drift · surrogate key · upsert |
+| `databricks-dlt-pipelines` | Delta Live Tables · Auto Loader · CDC · APPLY CHANGES · Workflows |
+| `databricks-source-integration` | PostgreSQL · JDBC · Kafka · REST API · Auto Loader · S3 · ADLS |
+| `databricks-data-transformation` | union · merge · dedup · schema drift · surrogate key · upsert |
 
 ### 📊 Analytics & Metrics
 | Skill | Triggers on |
 |---|---|
-| `metric-glossary` | dbt metrics · semantic layer · metric definition · KPI · undocumented |
-| `dashboard-authoring` | Lakeview · DBSQL · chart · filter · parameter · drilldown |
-| `time-series-data` | time series · gaps · LOCF · binning · IoT · streaming window |
+| `databricks-metric-glossary` | dbt metrics · semantic layer · metric definition · KPI · undocumented |
+| `databricks-dashboard-authoring` | Lakeview · DBSQL · chart · filter · parameter · drilldown |
+| `databricks-time-series-data` | time series · gaps · LOCF · binning · IoT · streaming window |
 
 ### 🔒 Security & Governance
 | Skill | Triggers on |
 |---|---|
-| `security-governance` | row filter · column mask · GRANT · ACL · audit log · PII |
-| `data-governance-traceability` | GDPR · CCPA · erasure · DSAR · lineage · retention · consent |
-| `cyber-security` | threat detection · secrets · zero trust · SOC2 · credential leak |
-| `data-catalog-lineage` | Unity Catalog · lineage · tagging · endorsement · impact analysis |
+| `databricks-security-governance` | row filter · column mask · GRANT · ACL · audit log · PII |
+| `databricks-data-governance-traceability` | GDPR · CCPA · erasure · DSAR · lineage · retention · consent |
+| `databricks-cyber-security` | threat detection · secrets · zero trust · SOC2 · credential leak |
+| `databricks-data-catalog-lineage` | Unity Catalog · lineage · tagging · endorsement · impact analysis |
 
 ### ⚡ Performance & Operations
 | Skill | Triggers on |
 |---|---|
-| `performance-scale` | slow query · cluster sizing · Photon · AQE · shuffle · spill |
-| `testing-validation` | DLT expectations · reconciliation · dbt test · assertion · UAT |
-| `project-management` | delivery · sprint · RAID log · go-live · hypercare · SLA |
+| `databricks-performance-scale` | slow query · cluster sizing · Photon · AQE · shuffle · spill |
+| `databricks-testing-validation` | DLT expectations · reconciliation · dbt test · assertion · UAT |
+| `databricks-project-management` | delivery · sprint · RAID log · go-live · hypercare · SLA |
 | `databricks-connect` | connect · auth · PAT · OAuth · workspace · no connection |
 
 ---
@@ -432,6 +434,8 @@ pip install "databricks-agent[ml]"
 pip install "databricks-agent[all]"
 ```
 
+**Skill layout:** each skill installs to `~/.claude/skills/<skill-name>/SKILL.md` — the canonical Agent Skills layout Claude Code discovers. Skills are namespaced `databricks-*` so they coexist with `powerbi-agent`, and validate against the shared [skill schema](SKILL_SCHEMA.md) in CI via `scripts/validate_skills.py`.
+
 **Auth methods supported (via Databricks SDK):**
 `PAT token` · `~/.databrickscfg profiles` · `DATABRICKS_HOST + DATABRICKS_TOKEN env vars` · `OAuth M2M` · `Azure Managed Identity` · `Entra ID`
 
@@ -443,7 +447,7 @@ pip install "databricks-agent[all]"
 flowchart TD
     ROOT["📁 databricks-agent"]:::root
 
-    ROOT --> SKILLS["📚 skills/\n17 Claude Code .md files"]:::layer
+    ROOT --> SKILLS["📚 skills/\n17 skill dirs · SKILL.md each"]:::layer
     ROOT --> SRC["🐍 src/databricks_agent/"]:::layer
     ROOT --> TESTS["🧪 tests/"]:::layer
 

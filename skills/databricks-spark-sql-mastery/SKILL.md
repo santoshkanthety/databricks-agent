@@ -1,23 +1,7 @@
 ---
 name: databricks-spark-sql-mastery
-description: Spark SQL and DataFrame API mastery - window functions, aggregations, CTEs, query optimization, and advanced analytical patterns
-triggers:
-  - spark sql
-  - dataframe api
-  - window function
-  - aggregation
-  - GROUP BY
-  - CTE
-  - subquery
-  - analytical query
-  - OVER PARTITION
-  - rank
-  - lead lag
-  - running total
-  - pivot
-  - unpivot
-  - query optimization
-  - explain plan
+description: Spark SQL and DataFrame API mastery - window functions, aggregations, CTEs, query optimization, and advanced analytical patterns. Use when the user mentions: spark sql, dataframe api, window function, aggregation, GROUP BY, CTE, subquery, analytical query, OVER PARTITION, rank, lead lag, running total, pivot, unpivot, query optimization, explain plan.
+license: MIT
 ---
 
 # Spark SQL & DataFrame API Mastery

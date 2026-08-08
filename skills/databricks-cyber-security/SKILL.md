@@ -1,29 +1,7 @@
 ---
 name: databricks-cyber-security
-description: Databricks cybersecurity posture - network isolation, secrets hygiene, threat detection, zero-trust architecture, credential scanning, SOC2/HIPAA controls, and incident response
-triggers:
-  - cyber security
-  - cybersecurity
-  - network isolation
-  - private endpoint
-  - secrets
-  - credential leak
-  - threat detection
-  - zero trust
-  - SOC2
-  - HIPAA
-  - PCI-DSS
-  - vulnerability
-  - attack surface
-  - hardening
-  - incident response
-  - access review
-  - privilege escalation
-  - lateral movement
-  - exfiltration
-  - IP allowlist
-  - VNet injection
-  - firewall
+description: Databricks cybersecurity posture - network isolation, secrets hygiene, threat detection, zero-trust architecture, credential scanning, SOC2/HIPAA controls, and incident response. Use when the user mentions: cyber security, cybersecurity, network isolation, private endpoint, secrets, credential leak, threat detection, zero trust, SOC2, HIPAA, PCI-DSS, vulnerability, attack surface, hardening, incident response, access review, privilege escalation, lateral movement, exfiltration, IP allowlist, VNet injection, firewall.
+license: MIT
 ---
 
 # Cybersecurity in Databricks

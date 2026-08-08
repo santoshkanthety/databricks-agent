@@ -1,23 +1,7 @@
 ---
 name: databricks-delta-modeling
-description: Delta table design, star schema on Delta Lake, fact/dimension tables, SCD strategies, surrogate keys, additivity rules, and anti-patterns
-triggers:
-  - star schema
-  - dimensional modeling
-  - fact table
-  - dimension
-  - SCD
-  - slowly changing dimension
-  - surrogate key
-  - grain
-  - additivity
-  - snowflake schema
-  - data vault
-  - delta table design
-  - schema design
-  - model
-  - normalize
-  - denormalize
+description: Delta table design, star schema on Delta Lake, fact/dimension tables, SCD strategies, surrogate keys, additivity rules, and anti-patterns. Use when the user mentions: star schema, dimensional modeling, fact table, dimension, SCD, slowly changing dimension, surrogate key, grain, additivity, snowflake schema, data vault, delta table design, schema design, model, normalize, denormalize.
+license: MIT
 ---
 
 # Delta Table Modeling

@@ -61,6 +61,12 @@ Issues = "https://github.com/santoshkanthety/databricks-agent/issues"
 [tool.hatch.build.targets.wheel]
 packages = ["src/databricks_agent"]
 
+[tool.hatch.build.targets.wheel.force-include]
+# Bundle the top-level skills/ directory inside the installed package.
+# Installer looks for them at databricks_agent/skills/data/ when installed via
+# pip, and falls back to project_root/skills/ when running from a clone.
+"skills" = "databricks_agent/skills/data"
+
 [tool.ruff]
 line-length = 130
 target-version = "py310"

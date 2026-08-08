@@ -1,20 +1,7 @@
 ---
 name: databricks-data-catalog-lineage
-description: Unity Catalog lineage, data governance, column-level lineage, tagging, endorsement, and impact analysis in Databricks
-triggers:
-  - data catalog
-  - lineage
-  - data governance
-  - unity catalog
-  - metadata
-  - endorsement
-  - sensitive data
-  - column lineage
-  - data discovery
-  - impact analysis
-  - data dictionary
-  - table tags
-  - purview
+description: Unity Catalog lineage, data governance, column-level lineage, tagging, endorsement, and impact analysis in Databricks. Use when the user mentions: data catalog, lineage, data governance, unity catalog, metadata, endorsement, sensitive data, column lineage, data discovery, impact analysis, data dictionary, table tags, purview.
+license: MIT
 ---
 
 # Data Catalog & Lineage in Databricks
