@@ -34,6 +34,8 @@
 
 Built by **[Santosh Kanthety](https://www.linkedin.com/in/santoshkanthety/)** · 20+ years of Technology & Data transformation delivery and strategy.
 
+**Free and open source (MIT).** Built in the open and given back to the data community — [contributions of any size are welcome](#-open-source-on-purpose).
+
 ---
 
 ---
@@ -468,22 +470,44 @@ flowchart TD
 
 ---
 
-## 🤝 Contributing
+## 🤝 Open source, on purpose
 
-PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+**This project is MIT-licensed and open to anyone.** Fork it, run it in client work,
+rip it apart for parts, ship your own adapter. No CLA, no gatekeeping, no permission needed.
+
+Everything I know about data engineering I learned from people who published their
+work for free — blog posts, sample notebooks, half-finished repos, answers on forums at
+2am. This is me paying that forward. If it saves you a week, it did its job.
+
+Contributions of every size are welcome, and **you do not need to be a Databricks expert
+to make one.** A typo fix in a skill file is a real contribution.
 
 ```
-Priority areas:
-  ⚡ New skills  (ML/MLflow, cost optimization, streaming patterns)
-  🛠  CLI commands  (workspace files, secrets, volumes)
+NO PYTHON REQUIRED:
+  📝 Improve a skill file in skills/   (pure Markdown — 17 of them)
+  📊 Add a real-world Delta / DLT / Unity Catalog pattern
+  🐞 Report a bug with reproduction steps
+  💡 Open an issue suggesting a skill or CLI command you wish existed
+
+WITH PYTHON:
+  ⚡ New skills   (ML/MLflow, cost optimization, streaming patterns)
+  🛠  CLI commands (workspace files, secrets, volumes)
   🧪 Integration tests
   🎨 Web UI improvements
 
-Setup:
+SETUP:
   git clone https://github.com/santoshkanthety/databricks-agent
+  cd databricks-agent
   pip install -e ".[all]"
   pytest
 ```
+
+Full guidelines in [CONTRIBUTING.md](CONTRIBUTING.md). First PR ever? Open it anyway —
+I would rather review a rough patch than never see the idea.
+
+[![Issues](https://img.shields.io/github/issues/santoshkanthety/databricks-agent?style=for-the-badge&color=00f0ff&labelColor=0a0a14)](https://github.com/santoshkanthety/databricks-agent/issues)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff4e00?style=for-the-badge&labelColor=0a0a14)](https://github.com/santoshkanthety/databricks-agent/pulls)
+[![Good First Issue](https://img.shields.io/badge/Good_first_issue-start_here-00f0ff?style=for-the-badge&labelColor=0a0a14)](https://github.com/santoshkanthety/databricks-agent/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 ---
 
