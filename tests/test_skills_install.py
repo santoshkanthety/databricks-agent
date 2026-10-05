@@ -156,4 +156,4 @@ def test_list_skills_runs():
 
 
 def test_skill_count():
-    assert len(SKILL_NAMES) == 17, f"Expected 17 skills, got {len(SKILL_NAMES)}"
+    assert len(SKILL_NAMES) == 20, f"Expected 20 skills, got {len(SKILL_NAMES)}"

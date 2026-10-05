@@ -22,7 +22,7 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Santosh%20Kanthety-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=0a0a14)](https://www.linkedin.com/in/santoshkanthety/)
 
 > **Give Claude Code enterprise-grade Databricks superpowers**
-> AI-native CLI + 17 Claude Code skills · Unity Catalog · Delta Live Tables · Zero-trust security
+> AI-native CLI + 20 Claude Code skills · Unity Catalog · Delta Live Tables · Zero-trust security
 
 </div>
 
@@ -40,14 +40,23 @@ Built by **[Santosh Kanthety](https://www.linkedin.com/in/santoshkanthety/)** ·
 
 ---
 
+## 🆕 What's New
+
+| Release | Highlights |
+|---|---|
+| **v0.2 — platform & deployment** | **The deployment layer the pack was missing.** Three new skills: `databricks-cli` (the unified CLI — OAuth U2M and M2M, profiles per environment, the `--output json` contract, Unity Catalog inspection, `sync --watch`, `clusters events`, and the guard rails on `--full-refresh` and deletes), `databricks-asset-bundles` (DABs end to end — `databricks.yml`, targets and the `development` vs `production` mode trap, variables and list-override semantics, validate → deploy → summary → run, the dev→staging→prod promotion path, and why renaming a resource key is a delete plus a create), and `databricks-fabric-apps` (exposing Unity Catalog data to a Fabric App on the Rayfin SDK through a mirrored Azure Databricks catalog or a OneLake shortcut — including the fact that UC grants, row filters and column masks do **not** follow the data across that boundary). 20 skills |
+| **v0.1** | Initial release — CLI (`connect` · `sql` · `jobs` · `clusters` · `catalog` · `pipelines`), 17 skills, canonical `<skill-name>/SKILL.md` layout validated against the [shared schema](SKILL_SCHEMA.md) in CI |
+
+---
+
 ## 🧊 Beneath the Waterline
 
 > **This CLI is the visible 10%.**
-> What you install is one platform adapter sitting on top of a delivery doctrine built over 20+ years of shipping regulated, high-volume analytics inside tightly controlled enterprise environments — where the pipeline has to be right, auditable and defensible, not just fast to demo. The 17 skills are the codified version of that. The accelerators they were extracted from are the rest of the iceberg.
+> What you install is one platform adapter sitting on top of a delivery doctrine built over 20+ years of shipping regulated, high-volume analytics inside tightly controlled enterprise environments — where the pipeline has to be right, auditable and defensible, not just fast to demo. The 20 skills are the codified version of that. The accelerators they were extracted from are the rest of the iceberg.
 
 ### The portable core
 
-Most skill packs are written *for* one platform. These aren't. **Ten of these 17 concerns have a one-to-one counterpart in [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent) — `databricks-medallion-architecture` ↔ `powerbi-medallion-architecture`, and nine more — each written in that platform's own idiom, not copy-pasted.** Governance, lineage, medallion layering and test strategy don't change when the engine does; only their expression does. The paired concerns:
+Most skill packs are written *for* one platform. These aren't. **Ten of these 20 concerns have a one-to-one counterpart in [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent) — `databricks-medallion-architecture` ↔ `powerbi-medallion-architecture`, and nine more — each written in that platform's own idiom, not copy-pasted.** Governance, lineage, medallion layering and test strategy don't change when the engine does; only their expression does. The paired concerns:
 
 `medallion-architecture` · `data-catalog-lineage` · `data-governance-traceability` · `data-transformation` · `source-integration` · `performance-scale` · `testing-validation` · `time-series-data` · `cyber-security` · `project-management`
 
@@ -63,6 +72,9 @@ The remaining skills are the same doctrine in Databricks dialect:
 | Physical modeling | `databricks-delta-modeling` | `powerbi-model` |
 | Orchestration | `databricks-dlt-pipelines` | `powerbi-fabric-pipelines` |
 | Presentation | `databricks-dashboard-authoring` | `powerbi-report-design` |
+| Deployment as code | `databricks-asset-bundles` | `powerbi-pbip-format` + `powerbi-te-cli` |
+| Platform CLI | `databricks-cli` | `powerbi-fabric-cli` |
+| Custom app surface | `databricks-fabric-apps` | `powerbi-fabric-apps` |
 
 ```mermaid
 flowchart TD
@@ -126,7 +138,7 @@ Sizing a platform build, a migration or a governance retrofit and want the part 
 flowchart TD
     U(["👤 You in Claude Code"]):::user
 
-    subgraph SKILLS ["⚡ 17 Skills Layer  ·  pure knowledge, zero code execution"]
+    subgraph SKILLS ["⚡ 20 Skills Layer  ·  pure knowledge, zero code execution"]
         S1["🏗️ Medallion\nArchitecture"]:::skill
         S2["⚙️ DLT\nPipelines"]:::skill
         S3["🔒 Security &\nGovernance"]:::skill
@@ -224,7 +236,7 @@ sequenceDiagram
     CLI-->>You: workspace confirmed
 
     You->>CLI: databricks-agent skills install
-    CLI-->>You: ✓ 17 skills → ~/.claude/skills/<name>/SKILL.md
+    CLI-->>You: ✓ 20 skills → ~/.claude/skills/<name>/SKILL.md
 
     You->>CLI: databricks-agent doctor
     CLI-->>You: ✓ all checks passed
@@ -297,7 +309,7 @@ flowchart LR
 
 ---
 
-## ⬡ 17 Claude Code Skills
+## ⬡ 20 Claude Code Skills
 
 Skills are markdown knowledge files that activate automatically when Claude detects matching keywords. Install once, use forever.
 
@@ -333,6 +345,13 @@ databricks-agent skills install   # → ~/.claude/skills/
 | `databricks-data-governance-traceability` | GDPR · CCPA · erasure · DSAR · lineage · retention · consent |
 | `databricks-cyber-security` | threat detection · secrets · zero trust · SOC2 · credential leak |
 | `databricks-data-catalog-lineage` | Unity Catalog · lineage · tagging · endorsement · impact analysis |
+
+### 🚀 Platform & Deployment
+| Skill | Triggers on |
+|---|---|
+| `databricks-cli` | databricks CLI · auth login · .databrickscfg · profile · --output json |
+| `databricks-asset-bundles` | asset bundle · DAB · databricks.yml · bundle deploy · target · promote |
+| `databricks-fabric-apps` | Fabric App · Rayfin · mirrored Unity Catalog · OneLake shortcut |
 
 ### ⚡ Performance & Operations
 | Skill | Triggers on |
@@ -380,7 +399,7 @@ mindmap
       check status
       view events
     skills
-      install 17 skills
+      install 20 skills
       uninstall
       list status
     doctor
@@ -449,7 +468,7 @@ pip install "databricks-agent[all]"
 flowchart TD
     ROOT["📁 databricks-agent"]:::root
 
-    ROOT --> SKILLS["📚 skills/\n17 skill dirs · SKILL.md each"]:::layer
+    ROOT --> SKILLS["📚 skills/\n20 skill dirs · SKILL.md each"]:::layer
     ROOT --> SRC["🐍 src/databricks_agent/"]:::layer
     ROOT --> TESTS["🧪 tests/"]:::layer
 
@@ -484,7 +503,7 @@ to make one.** A typo fix in a skill file is a real contribution.
 
 ```
 NO PYTHON REQUIRED:
-  📝 Improve a skill file in skills/   (pure Markdown — 17 of them)
+  📝 Improve a skill file in skills/   (pure Markdown — 20 of them)
   📊 Add a real-world Delta / DLT / Unity Catalog pattern
   🐞 Report a bug with reproduction steps
   💡 Open an issue suggesting a skill or CLI command you wish existed
@@ -516,7 +535,7 @@ I would rather review a rough patch than never see the idea.
 ```
 ╔═══════════════════════════════════════════════════════════════╗
 ║                                                               ║
-║   ⚡  DATABRICKS · AGENT  //  TRON ARES  //  v0.1.0          ║
+║   ⚡  DATABRICKS · AGENT  //  TRON ARES  //  v0.2.0          ║
 ║                                                               ║
 ║   Built by  SANTOSH KANTHETY                                  ║
 ║   20+ years of Technology & Data transformation               ║
@@ -530,6 +549,6 @@ I would rather review a rough patch than never see the idea.
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
-MIT License · Inspired by [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent)
+MIT License · Sibling adapter: [powerbi-agent](https://github.com/santoshkanthety/powerbi-agent) · Credits in [ATTRIBUTIONS.md](ATTRIBUTIONS.md)
 
 </div>
