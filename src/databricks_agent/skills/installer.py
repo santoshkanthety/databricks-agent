@@ -29,6 +29,9 @@ SKILLS_SOURCE_DIR = _PKG_DATA_DIR if _PKG_DATA_DIR.is_dir() else _REPO_SKILLS_DI
 
 SKILL_NAMES = [
     "databricks-connect",
+    "databricks-cli",
+    "databricks-asset-bundles",
+    "databricks-fabric-apps",
     "databricks-data-catalog-lineage",
     "databricks-data-transformation",
     "databricks-spark-sql-mastery",
